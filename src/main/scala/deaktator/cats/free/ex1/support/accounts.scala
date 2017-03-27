@@ -1,8 +1,8 @@
-package deaktator.cats.free.ex1
+package deaktator.cats.free.ex1.support
 
 // From Ch 3 code of "Functional and Reactive Domain Modeling", Debasish Ghosh.
 
-import java.util.{ Date, Calendar }
+import java.util.{Calendar, Date}
 
 object common {
   type Amount = BigDecimal
@@ -10,7 +10,7 @@ object common {
   val today: Date = Calendar.getInstance.getTime
 }
 
-import common._
+import deaktator.cats.free.ex1.support.common._
 
 case class Balance(amount: Amount = 0)
 

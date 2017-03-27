@@ -1,7 +1,10 @@
-package deaktator.cats.free.ex1
+package deaktator.cats.free.ex1.free
+
+import deaktator.cats.free.ex1.support.Account
 
 /**
   * From Ch 5 of "Functional and Reactive Domain Modeling", Debasish Ghosh.
+  *
   * @tparam A
   */
 sealed trait AccountRepoA[+A]

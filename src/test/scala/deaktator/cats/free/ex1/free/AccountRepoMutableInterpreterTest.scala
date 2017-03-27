@@ -1,9 +1,10 @@
-package deaktator.cats.free.ex1
+package deaktator.cats.free.ex1.free
 
 import java.util.Date
 
-import deaktator.cats.free.ex1.AccountRepository._
-import deaktator.cats.free.ex1.common.today
+import deaktator.cats.free.ex1.free.AccountRepository._
+import deaktator.cats.free.ex1.support.common.today
+import deaktator.cats.free.ex1.support.{Account, Balance}
 import monix.execution.CancelableFuture
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest._
@@ -25,7 +26,7 @@ class AccountRepoMutableInterpreterTest extends FlatSpec with Matchers {
 
     // Can be defined later because it's not used in the for comprehension.
     val interpreter = new AccountRepoMutableInterpreter
-    check(interpreter(actions).runAsync, interpreter.getTable)
+    check(interpreter(actions).runAsync, interpreter.mutableState)
   }
 
   private def check(cf: CancelableFuture[Unit], state: Map[String, Account]): Unit = {

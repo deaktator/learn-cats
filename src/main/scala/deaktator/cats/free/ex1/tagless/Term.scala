@@ -3,9 +3,18 @@ package deaktator.cats.free.ex1.tagless
 import scala.language.{higherKinds, implicitConversions}
 
 /**
-  * Created by deak on 3/26/17.
+  * Term appearing in Paul Chiusano's blog.
+  *
+  * Created by deaktator on 3/26/17.
   */
 trait Term[Alg[_[_]], +A] {
+
+  /**
+    * Given an algebra, construct an `F[A]`
+    * @param A type parameterizing the type constructor.
+    * @tparam F type constuctor.  Covariant in this implementation.  Not in the blog.
+    * @return
+    */
   def apply[F[+_]](A: Alg[F]): F[A]
 }
 
@@ -20,5 +29,5 @@ object Term {
     * @tparam A type parameterized by F.
     * @return
     */
-  implicit def toF[Alg[_[_]], F[+_], A](term: Term[Alg, A])(implicit A: Alg[F]): F[A] = term(A)
+  implicit def applyAlgebra[Alg[_[_]], F[+_], A](term: Term[Alg, A])(implicit A: Alg[F]): F[A] = term(A)
 }

@@ -11,5 +11,7 @@ package deaktator.cats.free.ex1
   *
   * The desire is to illustrate how to achieve many of the same benefits of `Free` without having
   * to provide an explicit GADT that is lifted into the Free monad.
+  *
+  * Created by deaktator on 3/26/17.
   */
 package object tagless {}
