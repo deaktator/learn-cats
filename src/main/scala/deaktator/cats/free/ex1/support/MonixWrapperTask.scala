@@ -8,10 +8,10 @@ import monix.eval.Task
   * Created by deak on 3/26/17.
   */
 case class MonixWrapperTask[+A](task: Task[A]) {
-  def map[B](f: A => B): MonixWrapperTask[B] =
-    MonixWrapperTask.MonixWrapperTaskMonad.map(this)(f)
-  def flatMap[B](f: A => MonixWrapperTask[B]): MonixWrapperTask[B] =
-    MonixWrapperTask.MonixWrapperTaskMonad.flatMap(this)(f)
+//  def map[B](f: A => B): MonixWrapperTask[B] =
+//    MonixWrapperTask.MonixWrapperTaskMonad.map(this)(f)
+//  def flatMap[B](f: A => MonixWrapperTask[B]): MonixWrapperTask[B] =
+//    MonixWrapperTask.MonixWrapperTaskMonad.flatMap(this)(f)
 }
 
 object MonixWrapperTask {

@@ -1,14 +1,15 @@
 package deaktator.cats.free.ex1.tagless
 
-import deaktator.cats.free.ex1.support.{Account, Balance}
+import deaktator.cats.free.ex1.support.{Account, Balance, Constants}
 import deaktator.cats.free.ex1.tagless.AccountRepoA.{open, update}
-import deaktator.cats.free.ex1.support.Constants
 import monix.execution.CancelableFuture
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest._
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import cats.syntax.flatMap.toFlatMapOps
+import cats.syntax.functor.toFunctorOps
 
 /**
   * Created by deak on 3/26/17.
@@ -20,11 +21,17 @@ class MutableMonixWrapperTastAccountRepoTest extends FlatSpec with Matchers {
     // converted to F[A] via Term.applyAlgebra.  In this case, F[A] = MonixWrapperTask[A].
     implicit val acctRepo = MutableMonixWrapperTaskAccountRepo()
 
-    // Notice that we don't need to supply a type for actions.
-    // But Intellij doesn't like it!
+    // To support for comprehensions, uses:
+    //    cats.syntax.flatMap.toFlatMapOps and
+    //    cats.syntax.functor.toFunctorOps
+    //
+    // How do we get rid of `(acctRepo)` without explicitly including
+    // `map` and `flatMap` in `MonixWrapperTask`?  Can we somehow use
+    // the monad in the companion class?  Seems like Term.applyAlgebra
+    // isn't being called correctly.
     val actions = for {
-      a <- open(Constants.acctNo, Constants.name, Constants.date)
-      _ <- update(a.no, _.copy(balance = Balance(Constants.bal)))
+      a <- open(Constants.acctNo, Constants.name, Constants.date)(acctRepo)
+      _ <- update(a.no, _.copy(balance = Balance(Constants.bal)))(acctRepo)
     } yield ()
 
     check(actions.task.runAsync, acctRepo.mutableState)

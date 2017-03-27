@@ -16,8 +16,12 @@ import scala.concurrent.duration._
 class MutableTaskAccountRepoTest extends FlatSpec with Matchers {
   "MutableTaskAccountRepo" should "correctly create and update records" in {
     // Must be defined here (and implicitly) b/c it's used in the for comprehension.
+    // The Terms on the right of the '<-' in the for comprehension are implicitly
+    // converted to F[A] via Term.applyAlgebra.  In this case, F[A] = Task[A].
     implicit val acctRepo = MutableTaskAccountRepo()
 
+    // Notice that we don't need to supply a type for actions.
+    // But Intellij doesn't like it!
     val actions = for {
       a <- open(Constants.acctNo, Constants.name, Constants.date)
       _ <- update(a.no, _.copy(balance = Balance(Constants.bal)))
