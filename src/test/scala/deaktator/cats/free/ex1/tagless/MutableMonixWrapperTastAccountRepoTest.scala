@@ -26,9 +26,8 @@ class MutableMonixWrapperTastAccountRepoTest extends FlatSpec with Matchers {
     //    cats.syntax.functor.toFunctorOps
     //
     // How do we get rid of `(acctRepo)` without explicitly including
-    // `map` and `flatMap` in `MonixWrapperTask`?  Can we somehow use
-    // the monad in the companion class?  Seems Term.applyAlgebra can't
-    // be found.
+    // `map` and `flatMap` in `MonixWrapperTask`?  Seems Term.applyAlgebra
+    // can't be found.
     val actions = for {
       a <- open(Constants.acctNo, Constants.name, Constants.date)(acctRepo)
       _ <- update(a.no, _.copy(balance = Balance(Constants.bal)))(acctRepo)
