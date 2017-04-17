@@ -2,7 +2,7 @@ package deaktator.cats.free.ex1.tagless
 
 import cats.syntax.flatMap.toFlatMapOps
 import cats.syntax.functor.toFunctorOps
-import deaktator.cats.free.ex1.support.{Account, Balance, Constants}
+import deaktator.cats.free.ex1.support.{Account, Balance, Constants, MonixWrapperTask}
 import deaktator.cats.free.ex1.tagless.AccountRepoA.{open, update}
 import monix.execution.CancelableFuture
 import monix.execution.Scheduler.Implicits.global
@@ -19,7 +19,7 @@ class MutableMonixWrapperTastAccountRepoTest extends FlatSpec with Matchers {
     // Must be defined here b/c it's used in the for comprehension.  The Terms
     // on the right of the '<-' in the for comprehension are converted to F[A]
     // via Term.apply.  In this case, F[A] = MonixWrapperTask[A].
-    implicit val acctRepo = MutableMonixWrapperTaskAccountRepo()
+    implicit val acctRepo = MutableAccountRepoInterpreter[MonixWrapperTask]
 
     // To support for comprehensions, uses:
     //    cats.syntax.flatMap.toFlatMapOps and
