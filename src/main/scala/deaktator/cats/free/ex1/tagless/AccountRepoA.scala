@@ -60,22 +60,22 @@ trait AccountRepoA[F[_]] {
 object AccountRepoA {
 
   def query(no: String): Term[AccountRepoA, Account] = new Term[AccountRepoA, Account] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Account] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Account] =
       A.query(no)
   }
 
   def store(account: Account): Term[AccountRepoA, Unit] = new Term[AccountRepoA, Unit] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Unit] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Unit] =
       A.store(account)
   }
 
   def delete(no: String): Term[AccountRepoA, Unit] = new Term[AccountRepoA, Unit] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Unit] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Unit] =
       A.delete(no)
   }
 
   def update(no: String, f: Account => Account): Term[AccountRepoA, Unit] = new Term[AccountRepoA, Unit] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Unit] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Unit] =
       // Or alternative, this could be done with for comprehension syntax:
       //   import cats.syntax.flatMap.toFlatMapOps
       //   import cats.syntax.functor.toFunctorOps
@@ -88,17 +88,17 @@ object AccountRepoA {
   }
 
   def updateBalance(no: String, amount: Amount): Term[AccountRepoA, Unit] = new Term[AccountRepoA, Unit] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Unit] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Unit] =
       update(no, a => updateBal(a, amount))(A)
   }
 
   def open(no: String, name: String, openingDate: Date): Term[AccountRepoA, Account] = new Term[AccountRepoA, Account] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Account] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Account] =
       A.M.flatMap(A.store(Account(no, name, openingDate)))(_ => A.query(no))
   }
 
   def close(no: String): Term[AccountRepoA, Account] = new Term[AccountRepoA, Account] {
-    override def apply[F[+_]](A: AccountRepoA[F]): F[Account] =
+    override def apply[F[_]](A: AccountRepoA[F]): F[Account] =
       A.M.flatMap(update(no, close)(A))(_ => A.query(no))
   }
 

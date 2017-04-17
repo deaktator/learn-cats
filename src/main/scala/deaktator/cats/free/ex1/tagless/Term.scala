@@ -7,7 +7,7 @@ import scala.language.{higherKinds, implicitConversions}
   *
   * Created by deaktator on 3/26/17.
   */
-trait Term[Alg[_[_]], +A] {
+trait Term[Alg[_[_]], A] {
 
   /**
     * Given an algebra, construct an `F[A]`
@@ -15,7 +15,7 @@ trait Term[Alg[_[_]], +A] {
     * @tparam F type constuctor.  Covariant in this implementation.  Not in the blog.
     * @return
     */
-  def apply[F[+_]](A: Alg[F]): F[A]
+  def apply[F[_]](A: Alg[F]): F[A]
 }
 
 object Term {
@@ -29,5 +29,5 @@ object Term {
     * @tparam A type parameterized by F.
     * @return
     */
-  implicit def applyAlgebra[Alg[_[_]], F[+_], A](term: Term[Alg, A])(implicit A: Alg[F]): F[A] = term(A)
+  implicit def applyAlgebra[Alg[_[_]], F[_], A](term: Term[Alg, A])(implicit A: Alg[F]): F[A] = term(A)
 }
